@@ -1,0 +1,171 @@
+﻿<html>
+	<head>
+		<title>Pseudo v1.1 - Developer version</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>
+	<body onload="start();" style="">
+
+		<div class="pop-up_keret" id="pop-up_keret">
+			<div class="pop-up" id="pop-up">
+				<div class='screen' id='screen'></div>
+				<div class='log' id='log'></div>
+			</div>
+		</div>
+
+		<div style="width:1000px;margin-left:auto;margin-right:auto;margin-top: 20px;">
+			<div class="keret" id="keret">
+				<div class="header">Pseudo v1.1 - Developer version
+				</div>
+
+				<div class="main">
+				<!-- Adatszerkezeti táblázat és -->
+				<!--   beviteli mező a kódnak   -->
+          
+					<div id="adatszerk" class="adatszerkDiv">
+              
+                
+                
+					<table class="adatszerk" id="adatSzerkTabla">
+						<tr>
+							<td colspan=5 align="center" id="adatszerkCim">
+								Adatszerkezeti táblázat:
+							</td>
+						</tr>
+						<tr align="left">
+							<td style="width:1px;">
+								<font style="margin-left:5px;">Funkció</font>
+							</td>
+							<td style="width:1px;">
+								<font style="margin-left:5px;">Azonosító</font>
+							</td>
+							<td style="width:1px;">
+								<font style="margin-left:5px;">Típus</font>
+							</td>
+							<td>
+								<font style="margin-left:5px;">Jelleg</font>
+							</td>
+							<td class="torlesTD">
+								<img src="pics/delete.png" alt="x" />
+							</td>
+						</tr>
+						<tr align="center" id="sor0">
+							<td><input type="text" class="funkcioI" id="funk0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
+							<td><input type="text" class="azonI" id="azon0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
+							<td>
+								<select class="tipusI" id="tipus0" onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);">
+									<option></option>
+									<option>Egész</option>
+									<option>Karakter</option>
+									<option>Logikai</option>
+								</select>
+							</td>
+							<td>
+								<input type="checkbox" id="checkI0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/>I
+								<input type="checkbox" id="checkO0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);" />O
+								<input type="checkbox" id="checkM0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);" />M
+							</td>
+							<td bgcolor="white">
+								<img src="pics/delete.png" alt="x" onclick="adatSzerk.sorEllen(0);" id="torles0" class="torles"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="bridgeDiv">
+					<table class="bridgeTable">
+						<tr><td style="height:15px;border-left: 1px solid #dddddd;border-bottom: 1px solid #ddd;"></td></tr>
+						<tr><td style="height:15px;border-right: 1px solid #ddd;"></td></tr>
+					</table>
+					<br>
+				</div>
+			
+				<div class="codeDiv">
+					<table class="codeTable">
+						<tr>
+							<td style="background-color:#cfcfcf;width:48px;">
+								<textarea readonly="" onscroll="codeBox.scrolling(document.getElementById('codeCode'));"
+									unselectable="on" wrap="off" id="codeRowIds">1.
+								</textarea>
+							</td>
+							<td>
+								<textarea id="codeCode" class="codeCode" onscroll="codeBox.scrolling(this);" wrap="off" ></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td colspan=2 align=left>
+								<input value="Futtatás" type="submit" onclick="PseudoRun();"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+		
+			</div>
+	
+			<div class="footer" id="footer">
+				Created by Edem (edem013@gmail.com)
+			</div>
+		</div>
+	</div>
+</body>
+	<script type="text/javascript" src="Master.js"></script>
+	<script type="text/javascript" src="VM/CPU.js"></script>
+	<script type="text/javascript" src="VM/MEM.js"></script>
+	<script type="text/javascript" src="VM/COM.js"></script>
+	<script type="text/javascript" src="VM/Compiler/SCANNER.js"></script>
+	<script type="text/javascript" src="VM/Compiler/PARSER.js"></script>
+	<script type="text/javascript" src="VM/Compiler/CODEGEN.js"></script>
+	
+	<script type="text/javascript" src="jsunity-0.6.js"></script>
+	<script type="text/javascript" src="Master_ut.js"></script>
+	<script type="text/javascript" src="VM/CPU_ut.js"></script>
+	<script type="text/javascript" src="VM/MEM_ut.js"></script>
+	<script type="text/javascript" src="VM/COM_ut.js"></script>
+	<script type="text/javascript" src="VM/Compiler/SCANNER_ut.js"></script>
+	<script type="text/javascript" src="VM/Compiler/PARSER_ut.js"></script>
+	<script type="text/javascript" src="VM/Compiler/CODEGEN_ut.js"></script>
+	<script type="text/javascript" src="USERF.js"></script>
+	<script>
+	
+		function AddToScreen(e)
+		{
+			console.log("SCREEN: " + e);
+		}
+	
+		function start()
+		{
+			console.log("TEST run started:");
+			// create a new instance
+			myApp = Pseudo.Init(AddToScreen);
+			// start the unit test
+			//myApp && Pseudo.StartUnitTest();
+			
+			//test run
+			//myApp.Run("Ki: 3+4*2", "");
+		}
+		
+		function PseudoRun(){
+			/*adatSzerk.sorEllen();
+			myApp.ClearVariables();
+			for( var i=0; i<adatSzerk.sorokSzama; i++){
+				myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, adatSzerk.sorok[i].tipus, {i: false, m:true, o: false});
+			}
+			myApp.Run(document.getElementById('codeCode').value, '');*/
+			myApp && Pseudo.StartUnitTest();
+		}
+	    
+		/* inicializálás */
+		codeBox.codeUrit();
+    
+		/* kódmező melletti sorszám mező feltöltése */
+		codeBox.sorSzamNovel();
+
+		document.getElementById("adatszerkCim").style.backgroundImage = "none";
+    
+		printLog = function(mit){
+			if (true){
+				document.getElementById('log').innerHTML += mit+"<br>";
+				document.getElementById('log').scrollTop=document.getElementById('log').scrollHeight;
+			}
+		}
+	</script>
+</html>
