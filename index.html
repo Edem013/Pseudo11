@@ -1,7 +1,8 @@
-﻿<html>
+﻿<!DOCTYPE html>
 	<head>
 		<title>Pseudo v1.1 - Developer version</title>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<meta charset="UTF-8">
 	</head>
 	<body onload="start();" style="">
 
@@ -27,33 +28,33 @@
                 
 					<table class="adatszerk" id="adatSzerkTabla">
 						<tr>
-							<td colspan=5 align="center" id="adatszerkCim">
+							<td colspan=5 id="adatszerkCim">
 								Adatszerkezeti táblázat:
 							</td>
 						</tr>
-						<tr align="left">
-							<td style="width:1px;">
-								<font style="margin-left:5px;">Funkció</font>
+						<tr id="adatszerkOszlopCim">
+							<td class="adatszerkCella" style="width:1px;">
+								Funkció
 							</td>
-							<td style="width:1px;">
-								<font style="margin-left:5px;">Azonosító</font>
+							<td class="adatszerkCella" style="width:1px;">
+								Azonosító
 							</td>
-							<td style="width:1px;">
-								<font style="margin-left:5px;">Típus</font>
+							<td class="adatszerkCella" style="width:1px;">
+								Típus
 							</td>
 							<td>
-								<font style="margin-left:5px;">Jelleg</font>
+								Jelleg
 							</td>
 							<td class="torlesTD">
 								<img src="pics/delete.png" alt="x" />
 							</td>
 						</tr>
-						<tr align="center" id="sor0">
+						<tr style="text-align:center;" id="sor0">
 							<td><input type="text" class="funkcioI" id="funk0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
 							<td><input type="text" class="azonI" id="azon0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
 							<td>
 								<select class="tipusI" id="tipus0" onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);">
-									<option></option>
+									<option> </option>
 									<option>Egész</option>
 									<option>Karakter</option>
 									<option>Logikai</option>
@@ -64,7 +65,7 @@
 								<input type="checkbox" id="checkO0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);" />O
 								<input type="checkbox" id="checkM0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);" />M
 							</td>
-							<td bgcolor="white">
+							<td style="background-color:white">
 								<img src="pics/delete.png" alt="x" onclick="adatSzerk.sorEllen(0);" id="torles0" class="torles"/>
 							</td>
 						</tr>
@@ -84,15 +85,15 @@
 						<tr>
 							<td style="background-color:#cfcfcf;width:48px;">
 								<textarea readonly="" onscroll="codeBox.scrolling(document.getElementById('codeCode'));"
-									unselectable="on" wrap="off" id="codeRowIds">1.
+									wrap="soft" id="codeRowIds">1.
 								</textarea>
 							</td>
 							<td>
-								<textarea id="codeCode" class="codeCode" onscroll="codeBox.scrolling(this);" wrap="off" ></textarea>
+								<textarea id="codeCode" class="codeCode" onscroll="codeBox.scrolling(this);" wrap="soft" ></textarea>
 							</td>
 						</tr>
 						<tr>
-							<td colspan=2 align=left>
+							<td colspan=2 style="text-align:left">
 								<input value="Futtatás" type="submit" onclick="PseudoRun();"/>
 							</td>
 						</tr>
@@ -106,7 +107,7 @@
 			</div>
 		</div>
 	</div>
-</body>
+
 	<script type="text/javascript" src="Master.js"></script>
 	<script type="text/javascript" src="VM/CPU.js"></script>
 	<script type="text/javascript" src="VM/MEM.js"></script>
@@ -168,4 +169,5 @@
 			}
 		}
 	</script>
+</body>
 </html>

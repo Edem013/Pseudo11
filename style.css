@@ -91,9 +91,16 @@
 		  border: 1px solid #afafaf;
 		}
 		#adatszerkCim{
-		  background-image:url('pics/loading.gif');
+			background-image:url('pics/loading.gif');
 			background-repeat:no-repeat;
 			background-position:right;
+			text-align:center;
+		}
+		#adatszerkOszlopCim{
+			text-align:left;
+		}
+		.adatszerkCella{
+			padding-left:5px;
 		}
 		.bridgeDiv{
 		  width:803px;
