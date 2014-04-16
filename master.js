@@ -114,7 +114,7 @@ Pseudo.Init = function(_printMethod)
 		try{
 			//TODO: remove
 			//clear memory
-			memory.Clear();
+			//memory.Clear();
 		
 			// compile the given code
 			_compile(code);
