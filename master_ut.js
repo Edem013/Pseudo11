@@ -5,7 +5,7 @@
  */
 Pseudo.StartUnitTest = function()
 {
-	Pseudo.StartUnitTest.Logging = true;
+	Pseudo.StartUnitTest.Logging = false;
 	
 	Pseudo._log("");
 	Pseudo._log("*** Unit test started ***");
@@ -57,7 +57,6 @@ Pseudo.StartUnitTest = function()
 		var failedTests = [];
 		
 		// Start the test
-		Pseudo.Options.Log.DisableAll();
 		for (var i=0; i<testCases.length; i++)
 		{
 			var actualTestCase = testCases[i];
@@ -69,12 +68,13 @@ Pseudo.StartUnitTest = function()
 				failedTests.push(actualTestCase);
 			}
 		}
-		Pseudo.Options.Log.EnableAll();
 		
-		Pseudo._log("*** Total Passed: " + totalPassed + " ***");
-		Pseudo._log("*** Total Failed: " + totalFailed + " ***");
+		var results = "*** Total Passed: " + totalPassed + " ***\n" +
+					  "*** Total Failed: " + totalFailed + " ***";
 		
-		alert("*** Total Failed: " + totalFailed + " ***");
+		Pseudo._log(results);
+		
+		alert(results);
 		
 		if (totalFailed > 0)
 		{

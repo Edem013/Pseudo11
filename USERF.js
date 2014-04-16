@@ -266,6 +266,52 @@ codeBox = {
 	codeUrit: function(){
 	  document.getElementById("codeRowIds").value = "1.\n";
 		document.getElementById("codeCode").value = "";
-		document.getElementById("codeCode").value = "I <- 8\nJ <- I+10\n\nIf (I+1)*2 < J and I < 9\n  Ki: 1\nElse\n  Ki: 0";
+		//document.getElementById("codeCode").value = "I <- 8\nJ <- I+10\n\nIf (I+1)*2 < J and I < 9\n  Ki: 1\nElse\n  Ki: 0";
 	}
 }
+
+Screen = {
+	showScreen: function(){
+
+		/* body innerHeight */
+		var innerHeight;
+		if( typeof( window.innerWidth ) == 'number' ) {
+      innerHeight = window.innerHeight;
+    }else if( document.documentElement && document.documentElement.clientHeight ) {
+      innerHeight = document.documentElement.clientHeight;
+    }else if( document.body && document.body.clientHeight) {
+      innerHeight = document.body.clientHeight;
+    }
+
+		/* body scrollTop */
+		var scrollTop=0;
+    if( typeof( window.pageYOffset ) == 'number' ) {
+      scrollTop = window.pageYOffset;
+    }else if(document.body && document.body.scrollTop) {
+      scrollTop = document.body.scrollTop;
+    }else if(document.documentElement && document.documentElement.scrollTop){
+      scrollTop = document.documentElement.scrollTop;
+    }
+
+		if (innerHeight > 370){
+		  innerHeight -= 370;
+			innerHeight /= 2;
+			scrollTop += innerHeight;
+		}
+
+		document.getElementById("pop-up").style.top = scrollTop+"px";
+		document.getElementById("pop-up_keret").style.height = Math.max(
+        Math.max(document.body.scrollHeight, document.documentElement.scrollHeight),
+        Math.max(document.body.offsetHeight, document.documentElement.offsetHeight),
+        Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+    )+"px";
+
+		document.getElementById("pop-up_keret").style.visibility = "visible";
+	},
+
+	/* kijelzõ elrejtése */
+	hideScreen: function(){
+	  document.getElementById("pop-up_keret").style.visibility = "hidden";
+		document.getElementById("pop-up_keret").style.height = 0+"px";
+	}
+};

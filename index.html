@@ -9,11 +9,10 @@
 		<div class="pop-up_keret" id="pop-up_keret">
 			<div class="pop-up" id="pop-up">
 				<div class='screen' id='screen'></div>
-				<div class='log' id='log'></div>
 			</div>
 		</div>
 
-		<div style="width:1000px;margin-left:auto;margin-right:auto;margin-top: 20px;">
+		<div style="width:1000px;margin-left:auto;margin-right:auto;padding-top: 20px;">
 			<div class="keret" id="keret">
 				<div class="header">Pseudo v1.1 - Developer version
 				</div>
@@ -56,6 +55,7 @@
 								<select class="tipusI" id="tipus0" onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);">
 									<option> </option>
 									<option>Egész</option>
+									<option>Valós</option>
 									<option>Karakter</option>
 									<option>Logikai</option>
 								</select>
@@ -89,7 +89,7 @@
 								</textarea>
 							</td>
 							<td>
-								<textarea id="codeCode" class="codeCode" onscroll="codeBox.scrolling(this);" wrap="soft" ></textarea>
+								<textarea id="codeCode" class="codeCode" onscroll="codeBox.scrolling(this);" wrap="off" ></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -103,7 +103,10 @@
 			</div>
 	
 			<div class="footer" id="footer">
-				Created by Edem (edem013@gmail.com)
+				<div style="float:left;"><div style="float:left;margin-right:5px;">Created by Edem</div><img src="pics/mail.png" alt="mail"/></div>
+				
+				<div style="float:right;" onclick="StartUnitTest();"><a href="#">Unit Test</a></div>
+				<div style="float:right;margin-right:10px;"><a href="https://github.com/Edem013/Pseudo11.git" target="_blank">Git repo</a></div>
 			</div>
 		</div>
 	</div>
@@ -127,46 +130,53 @@
 	<script type="text/javascript" src="USERF.js"></script>
 	<script>
 	
+		// Method for writing data on the screen
 		function AddToScreen(e)
 		{
-			console.log("SCREEN: " + e);
+			document.getElementById('screen').innerHTML += e;
 		}
 	
+		// Initialize the application
 		function start()
 		{
-			console.log("TEST run started:");
-			// create a new instance
-			myApp = Pseudo.Init(AddToScreen);
-			// start the unit test
-			//myApp && Pseudo.StartUnitTest();
+			// Setup UI
+			codeBox.codeUrit();
+			codeBox.sorSzamNovel();
+			document.getElementById("adatszerkCim").style.backgroundImage = "none";
 			
-			//test run
-			//myApp.Run("Ki: 3+4*2", "");
+			// create a new instance
+			Pseudo.Options.Log.DisableAll();
+			myApp = Pseudo.Init(AddToScreen);
 		}
 		
+		// Run the specified code
 		function PseudoRun(){
-			/*adatSzerk.sorEllen();
-			myApp.ClearVariables();
-			for( var i=0; i<adatSzerk.sorokSzama; i++){
-				myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, adatSzerk.sorok[i].tipus, {i: false, m:true, o: false});
+			try{
+				adatSzerk.sorEllen();
+				myApp.ClearVariables();
+				for( var i=0; i<adatSzerk.sorokSzama; i++){
+					var type = "";
+					switch(adatSzerk.sorok[i].tipus)
+					{
+						case 1: type = "Integer"; break;
+						case 2: type = "Float"; break;
+						case 3: type = "Char"; break;
+						case 4: type = "Boolean"; break;
+						default: throw { message: "Ismeretlen változó típus: " + adatSzerk.sorok[i].tipus };
+					}
+					myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, type, {i: false, m:true, o: false});
+				}
+				document.getElementById('screen').innerHTML = "";
+				Screen.showScreen();
+				document.getElementById("screen").setAttribute("onclick","Screen.hideScreen();");
+				myApp.Run(document.getElementById('codeCode').value, '');
+			}catch(e){
+				alert(e.message != undefined ? e.message : e);
 			}
-			myApp.Run(document.getElementById('codeCode').value, '');*/
-			myApp && Pseudo.StartUnitTest();
 		}
-	    
-		/* inicializálás */
-		codeBox.codeUrit();
-    
-		/* kódmező melletti sorszám mező feltöltése */
-		codeBox.sorSzamNovel();
-
-		document.getElementById("adatszerkCim").style.backgroundImage = "none";
-    
-		printLog = function(mit){
-			if (true){
-				document.getElementById('log').innerHTML += mit+"<br>";
-				document.getElementById('log').scrollTop=document.getElementById('log').scrollHeight;
-			}
+		
+		function StartUnitTest(){
+			myApp && Pseudo.StartUnitTest && Pseudo.StartUnitTest();
 		}
 	</script>
 </body>
