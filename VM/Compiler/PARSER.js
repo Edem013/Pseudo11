@@ -462,7 +462,9 @@ Pseudo.COM.Parser.Init = function(){
 			// Next token is an operator?
 			if (op.name != "(" && (
 			    tokens[index] == "+"  || tokens[index] == "-"  || tokens[index] == "*"  ||
-				tokens[index] == "/"  ||
+				tokens[index] == "/"  || tokens[index] == "%"  ||
+				((!Pseudo.COM.CASE_SENS && (tokens[index] == "mod")) || (Pseudo.COM.CASE_SENS && (tokens[index] == "MOD"))) ||
+				((!Pseudo.COM.CASE_SENS && (tokens[index] == "div"))  || (Pseudo.COM.CASE_SENS && (tokens[index] == "DIV")))  ||
 			    tokens[index] == "<"  || tokens[index] == "<=" || tokens[index] == "="  ||
 				tokens[index] == ">"  || tokens[index] == ">=" || tokens[index] == "<>" ||
 				((!Pseudo.COM.CASE_SENS && (tokens[index] == "and")) || (Pseudo.COM.CASE_SENS && (tokens[index] == "AND"))) ||
@@ -620,6 +622,19 @@ Pseudo.COM.Parser.Init = function(){
 						throw { message: "Nem várt típus!" };
 					}
 				}
+				else if(postfix[i].type == '%' ||
+						postfix[i].type == 'mod' ||
+						postfix[i].type == 'div' )
+				{
+					if (postfix[i].left.resultType == "Integer" && postfix[i].right.resultType == "Integer")
+					{
+						postfix[i].resultType = "Integer";
+					}
+					else
+					{
+						throw { message: "Nem várt típus!" };
+					}
+				}
 				else if(postfix[i].type == '&&' ||
 						postfix[i].type == '||')
 				{
@@ -691,7 +706,8 @@ Pseudo.COM.Parser.Init = function(){
 		else if ( op1 == "+" || op1 == "-"){
 			indexOp1 = ops.indexOf("+");
 		}
-		else if ( op1 == "*" || op1 == "/"){
+		else if ( op1 == "*" || op1 == "/" || op1 == "%" ||
+				  op1 == "div" || op1 == "mod"){
 			indexOp1 = ops.indexOf("*");
 		}
 		else if ( op1 == "<" || op1 == "<=" || op1 == "=" || op1 == "=>" || op1 == ">" || op1 == "<>"){
@@ -710,7 +726,8 @@ Pseudo.COM.Parser.Init = function(){
 		else if ( op2 == "+" || op2 == "-"){
 			indexOp2 = ops.indexOf("+");
 		}
-		else if ( op2 == "*" || op2 == "/"){
+		else if ( op2 == "*" || op2 == "/" || op2 == "%" ||
+				  op2 == "div" || op2 == "mod"){
 			indexOp2 = ops.indexOf("*");
 		}
 		else if ( op2 == "<" || op2 == "<=" || op2 == "=" || op2 == "=>" || op2 == ">" || op2 == "<>"){

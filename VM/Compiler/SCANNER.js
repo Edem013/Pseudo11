@@ -161,7 +161,7 @@ Pseudo.COM.Scanner.Init = function(){
 				}
 				
 				// Add arithmetic operators
-				// + - / *
+				// + - / * %
 				else if (_isArithmetic(inputText.charAt(i))){
 					tokens.push(inputText.charAt(i));
 				}	
@@ -208,7 +208,7 @@ Pseudo.COM.Scanner.Init = function(){
 	
 	// Private method for determine is the given character arithmetic operator
 	var _isArithmetic = function(charr){
-	  var regexp = new RegExp("[+-/*]");
+	  var regexp = new RegExp("[+-/*%]");
 		return regexp.test(charr);
 	};
 	

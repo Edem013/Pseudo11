@@ -475,13 +475,15 @@ Pseudo.COM.CodeGenerator.Init = function(){
 								break;
 							case "-": _insert("SUBA_B");break;
 							case "*": _insert("MULA_B");break;
+							case "div":
 							case "/":
 								if (root.resultType == "Integer")
 									_insert("DIVA_B_I");
 								else
 									_insert("DIVA_B_F");
 								break;
-						
+							case "mod":
+							case "%": _insert("MODA_B");break;
 							case "=": _insert("CMP_EQ");break;
 							case "<": _insert("CMP_L");break;
 							case "<>":

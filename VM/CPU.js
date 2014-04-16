@@ -199,6 +199,15 @@ Pseudo.CPU.Init = function(_printMethodParam){
 			regs.ip++;
 		},
 		
+		// Determine the remaining value after divide the value of
+		// register A with value of register B
+		MODA_B: function() { 
+			_log("Mod register A ("+regs.a+") with register B ("+regs.b+") and store the result into register C ("+regs.c+")");
+			if (regs.b == 0) throw { message: "Nullával történő osztás" };
+			regs.c = regs.a % regs.b;
+			regs.ip++;
+		},
+		
 		// Compare value of register A to the value of register B
 		// and set register F depends on the result (A == B)
 		CMP_EQ: function(){

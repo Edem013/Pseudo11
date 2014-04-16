@@ -691,6 +691,23 @@ Pseudo.CPU.StartUnitTest = function CPUTestCase()
 		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 4, "");	
 	};
 	
+	function test_ExecuteDIVA_B_I3()
+	{
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		this.testMemory.Write(ip+1, 5);
+		this.testMemory.Write(ip+3, 0);
+		
+		jsUnity.assertions.assertException(this.runInstructions, "",
+			['LDA',
+			'LDB',
+			'DIVA_B_I',
+			'STACKC',
+			'LDA_STACK',
+			'PRINTA_I']);	
+			
+	};
+	
 	function test_ExecuteDIVA_B_F1()
 	{
 		var ip = this.testCPU.GetInstructionPointer();
@@ -725,5 +742,57 @@ Pseudo.CPU.StartUnitTest = function CPUTestCase()
 			'PRINTA_F']);	
 		
 		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 4.75, "");	
+	};
+	
+	function test_ExecuteDIVA_B_F3()
+	{
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		this.testMemory.Write(ip+1, 5);
+		this.testMemory.Write(ip+3, 0);
+		
+		jsUnity.assertions.assertException(this.runInstructions, "",
+			['LDA',
+			'LDB',
+			'DIVA_B_F',
+			'STACKC',
+			'LDA_STACK',
+			'PRINTA_I']);	
+			
+	};
+	
+	function test_ExecuteMODA_B1()
+	{
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		this.testMemory.Write(ip+1, 5);
+		this.testMemory.Write(ip+3, 2);
+		
+		this.runInstructions(
+			['LDA',
+			'LDB',
+			'MODA_B',
+			'STACKC',
+			'LDA_STACK',
+			'PRINTA_I']);	
+		
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");	
+	};
+	
+	function test_ExecuteMODA_B2()
+	{
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		this.testMemory.Write(ip+1, 5);
+		this.testMemory.Write(ip+3, 0);
+		
+		jsUnity.assertions.assertException(this.runInstructions, "",
+			['LDA',
+			'LDB',
+			'MODA_B',
+			'STACKC',
+			'LDA_STACK',
+			'PRINTA_I']);	
+			
 	};
 }

@@ -521,4 +521,58 @@ Pseudo.COM.Parser.StartUnitTest = function ParserTestCase()
 			tokens,
 			this.testVariables);
 	};
+	
+	function test_Mod1()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 % 4");
+		
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
+	};
+	
+	function test_Mod2()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 % 4.5");
+		
+		jsUnity.assertions.assertException(this.testParser.Parse, "",
+			tokens,
+			this.testVariables);
+	};
+	
+	function test_Mod3()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 mod 4");
+		
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
+	};
+	
+	function test_Mod4()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 mod 4.5");
+		
+		jsUnity.assertions.assertException(this.testParser.Parse, "",
+			tokens,
+			this.testVariables);
+	};
+	
+	function test_Div1()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 div 4.5");
+		
+		jsUnity.assertions.assertException(this.testParser.Parse, "",
+			tokens,
+			this.testVariables);
+	};
+	
+	function test_Div2()
+	{
+		var tokens = this.testScanner.Scan(
+			"Ki: 13 diV 4");
+		
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
+	};
 }

@@ -1894,4 +1894,109 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			, "");
 		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "Hamis", "");
 	};
+	
+	function test_Mod1()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: 12 % 5"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
+	
+	function test_Mod2()
+	{
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run,"",
+			"KI: 12 % 5.3"
+			, "");
+	};
+	
+	function test_Mod3()
+	{
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run,"",
+			"KI: 'd' % 5.3"
+			, "");
+	};
+	
+	function test_Mod4()
+	{
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run,"",
+			"KI: 3.5 % 5"
+			, "");
+	};
+	
+	function test_Mod5()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: 110 % 50 / 4"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
+	
+	function test_Mod6()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: 110 % 50 / 4.0"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2.5, "");
+	};
+	
+	function test_Mod7()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: 110 mod 50 / 4"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
+	
+	function test_Mod8()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: 110 Mod 50 / 4.0"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2.5, "");
+	};
+	
+	function test_Div1()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.Run(
+			"Ki: 11 div 4", "");
+		
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
+	function test_Div2()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run,"",
+			"Ki: 12.1 DIV 4.4", "");
+	};
+	
+	function test_Div3()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"I <- 12 DIV 4 \n" +
+			"KI: I"
+			, "");
+		
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 3, "");
+	};
+	
+	function test_Div4()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Float",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"I <- 12 div 5 \n" +
+			"KI: I"
+			, "");
+		
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
 }
