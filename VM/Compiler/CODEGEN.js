@@ -353,7 +353,7 @@ Pseudo.COM.CodeGenerator.Init = function(){
 						case "Integer" : _insert("PRINTA_I"); break;
 						case "Boolean" : _insert("PRINTA_B"); break;
 						case "Float"   : _insert("PRINTA_F"); break;
-						case "Char"    : _insert("PRINTA_C"); break; //_DOC_
+						case "Char"    : _insert("PRINTA_C"); break;
 						default: throw { message: "Ismeretlen változó típus!" + root.resultType };
 					}
 					break;
@@ -387,7 +387,6 @@ Pseudo.COM.CodeGenerator.Init = function(){
 					_insert("STACKA");
 					break;
 					
-				// _DOC_
 				// Char
 				case "char":
 					// Load value

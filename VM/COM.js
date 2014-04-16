@@ -117,7 +117,6 @@ Pseudo.COM.Init = function(){
 		}else{
 			
 			//check the type of the variable
-			//_DOC_
 			if ( type == "Integer" || type == "Boolean" ||
 				 type == "Float" || type == "Char")
 			{

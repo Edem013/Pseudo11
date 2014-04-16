@@ -38,9 +38,6 @@ Pseudo.COM.Scanner.Init = function(){
 			var row = 1;		// index of the actual row in input code
 			var col = 0;		// index of the actual column in input code
 			
-			// convert to case sensitive
-			//_DOC_
-			//if (!Pseudo.COM.CASE_SENS) inputText = inputText.toLowerCase();
 			
 			// Scan every character in input code one-by-one
 			while (inputText.charAt(i) != ""){
@@ -99,13 +96,11 @@ Pseudo.COM.Scanner.Init = function(){
 						sztring += inputText.charAt(i+1);
 						i++;
 					}
-					//_DOC_
 					if (!Pseudo.COM.CASE_SENS) sztring = sztring.toLowerCase();
 					tokens.push(sztring);
 				}
 				
 				// Add char constants
-				// _DOC_
 				else if (inputText.charAt(i) == "'")
 				{
 					if (inputText.charAt(i+1) != "" && 

@@ -652,7 +652,6 @@ Pseudo.COM.Parser.Init = function(){
 			}
 		}
 		
-		//_DOC_
 		// At this point stack should contain only one object:
 		// the root of the expression.
 		if (stack.length > 1)
