@@ -147,16 +147,6 @@ Pseudo.CPU.Init = function(_printMethodParam){
 			};
 		},
 		
-		// Load value into register B from address stored in register H
-		// TODO is it required?
-		/*LDB_H: function(){
-			_log("Load value ("+ regs.a +") into register B from address H ("+regs.h+")");
-			regs.ip++;
-			return function(memory){
-				regs.b = memory.Read(regs.h);
-			};
-		},*/
-		
 		// Add value of register A to the value of register B
 		// and store the result into register C
 		ADDA_B:  function(){
@@ -221,20 +211,6 @@ Pseudo.CPU.Init = function(_printMethodParam){
 		},
 		
 		// Compare value of register A to the value of register B
-		// and set register F depends on the result (A <> B)
-		// TODO: This method can be replaced with CMP_EQ plus a negation
-		//       Remove!!!
-		/*CMP_NE: function(){
-			_log("Compare (not equal) register A ("+regs.a+") to register B ("+regs.b+")");
-			if (regs.a != regs.b){
-				regs.f = regs.c = 1;
-			}else{
-				regs.f = regs.c = 0;
-			}
-			regs.ip++;
-		},*/
-		
-		// Compare value of register A to the value of register B
 		// and set register F depends on the result (A < B)
 		CMP_L: function(){
 			_log("Compare (less than) register A ("+regs.a+") to register B ("+regs.b+")");
@@ -265,7 +241,6 @@ Pseudo.CPU.Init = function(_printMethodParam){
 		
 		// Print value of register A to the screen
 		// for boolean values
-		// TODO: Rename
 		PRINTA_B: function(){
 			_log("Print register A to the screen: " + regs.a);
 			if (regs.a == 0)
@@ -329,11 +304,8 @@ Pseudo.CPU.Init = function(_printMethodParam){
 	return {
 		//public scope
 		Execute: function(mnemonic){ return _execute(mnemonic); },
-		
 		GetInstructionPointer: function() { return regs.ip; },
 		SetInstructionPointer: function(address) { regs.ip = address; },
-		
-		//TODO: remove - GetIndexOfMnemonic: function(mnemonic){}
 		//end of public scope
 	};
 }
