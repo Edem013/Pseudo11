@@ -76,6 +76,13 @@ Pseudo.CPU.Init = function(_printMethodParam){
 			regs.ip++;
 		},
 		
+		// Load value from stack into register H
+		LDH_STACK: function(){
+			regs.h = stack.pop();
+			_log("Load value into register H from Stack - " + regs.a);
+			regs.ip++;
+		},
+		
 		// Load value into register H from memory address stored in register IP
 		LDH: function(){
 			regs.ip++;
@@ -270,8 +277,14 @@ Pseudo.CPU.Init = function(_printMethodParam){
 		// for chars
 		PRINTA_C: function(){
 			_log("Print register A to the screen: " + regs.a);
-			_printMethod(regs.a);
+			_printMethod(String.fromCharCode(regs.a));
 			regs.ip++;
+		},
+		
+		// Throw exception: index is out of bound.
+		OUTB: function(){
+			stack = [];
+			throw { message: "A használt tömb-index nincs az érvényes tartományban." };
 		},
 		 
 		// No Operation

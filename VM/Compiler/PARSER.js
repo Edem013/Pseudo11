@@ -56,6 +56,15 @@ Pseudo.COM.Parser.Init = function(){
 					result.identVar = { name: "identVar" };
 					result.identVar.id = ++id;
 					result.identVar.value = tokens[index];
+					
+					// if variable is not integer or float, or is an array
+					if (variables[result.identVar.value].size != undefined ||
+						!(variables[result.identVar.value].type == "Integer" ||
+						  variables[result.identVar.value].type == "Float"))
+					{
+						throw { message: "Nem várt típus: Tömb" };
+					}
+					
 					index++;
 				}else{
 					throw { message: "Ismeretlen azonosító: " + tokens[index] };
@@ -256,6 +265,38 @@ Pseudo.COM.Parser.Init = function(){
 					result.resultType = variables[result.value].type;	
 					index++;
 					
+					// Variable is an array
+					if (tokens[index] == "[" )
+					{
+						// check type of the array
+						if (variables[result.value].size == undefined)
+						{
+							throw { message: "Nem tömb típusú változó" };
+						}
+						
+						result.size = variables[result.value].size;
+						
+						// Add expression of the index
+						index++;
+						result.indexExp = _parseExp("]");
+						index++;
+						
+						// if index is not integer type
+						if (result.indexExp.resultType != "Integer")
+						{
+							throw { message: "Nem várt index típus: "+result.indexExp.ResultType };
+						}
+					}
+					else
+					{
+						// If variable is an array, but [ is missing
+						if (variables[result.value].type != "Char" &&
+							variables[result.value].size != undefined)
+						{
+							throw { message: "Nem várt típus: Tömb" };
+						}
+					}
+					
 					// "<-" (assignment)
 					if ( tokens[index] == "<-" ){
 						var assign = { name: "assign" };
@@ -281,7 +322,8 @@ Pseudo.COM.Parser.Init = function(){
 							  ||
 							  (variables[assign.identVar.value].type == "Float" && assign.exp.resultType == "Integer")
 							  ||
-							  (variables[assign.identVar.value].type == "String" && assign.exp.resultType == "Char")
+							  (variables[assign.identVar.value].type == "Char" && variables[assign.identVar.value].size != undefined
+								&& (assign.exp.resultType == "Char" || assign.exp.resultType == "String"))
 							  ))
 						{
 							throw { message: "Nem "+variables[assign.identVar.value].type+" típus: " + assign.exp.resultType };
@@ -298,6 +340,10 @@ Pseudo.COM.Parser.Init = function(){
 								index++;
 							}
 						}
+					}
+					else
+					{
+						throw { message: "Hiányzó \"<-\" jel!" }; 
 					}
 				}else{
 					// If current token is not a variable either
@@ -439,12 +485,54 @@ Pseudo.COM.Parser.Init = function(){
 				index++;
 			}
 			
+			// String
+			else if (/^".*"$/.test(tokens[index]))
+			{
+				op = { name : "string" };
+				op.id = ++id;
+				op.value = tokens[index].slice(1,tokens[index].length-1);
+				op.resultType = "String";
+				postfix.push(op);
+				index++;
+			}
+			
 			// Variable
 			else if( _isValidVar(tokens[index])){
 				op = { name: "identVar" };
 				op.id = ++id;
 				op.value = tokens[index];
-				op.resultType = variables[op.value].type;		
+				op.resultType = variables[op.value].type;
+				if (variables[op.value].size != undefined)
+					op.size = variables[op.value].size;
+
+				// Variable is an array
+				if (tokens[index+1] == "[" )
+				{
+					// check type of the array
+					if (variables[op.value].size == undefined)
+					{
+						throw { message: "Nem tömb típusú változó" };
+					}
+					
+					//op.size = variables[op.value].size;
+					
+					// Add expression of the index
+					index = index + 2;
+					op.indexExp = _parseExp("]");
+					
+					// if index is not integer type
+					if (op.indexExp.resultType != "Integer")
+					{
+						throw { message: "Nem várt index típus: "+op.indexExp.ResultType };
+					}
+				}else{
+					if (variables[op.value].type != "Char" &&
+						variables[op.value].size != undefined)
+					{
+						throw { message: "Nem várt típus: Tömb" };
+					}
+				}
+				
 				postfix.push(op);
 				index++;
 			}
@@ -584,11 +672,11 @@ Pseudo.COM.Parser.Init = function(){
 				*/
 				if (postfix[i].type == "+")
 				{
-					if ((postfix[i].left.resultType == "Char" || postfix[i].left.resultType == "String") &&
+					if ((postfix[i].left.resultType == "Char" || postfix[i].left.resultType == "String") ||
 						(postfix[i].right.resultType == "Char" || postfix[i].right.resultType == "String"))
 					{
 						// Result will be string always
-						throw { message: "String is not implemented yet" };
+						postfix[i].resultType = "String";
 					}
 					else if (postfix[i].left.resultType == "Integer" && postfix[i].right.resultType == "Integer")
 					{

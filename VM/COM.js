@@ -110,7 +110,7 @@ Pseudo.COM.Init = function(){
 	};
 	
 	// Private method for define new variable
-	var _addVariable = function(name, funct, type, mods){
+	var _addVariable = function(name, funct, type, mods, size){
 		if ((Pseudo.COM.CASE_SENS && variables[name] != null) ||
 			(!Pseudo.COM.CASE_SENS && variables[name.toLowerCase()])){
 			return false;
@@ -120,13 +120,22 @@ Pseudo.COM.Init = function(){
 			if ( type == "Integer" || type == "Boolean" ||
 				 type == "Float" || type == "Char")
 			{
+				if (size != undefined)
+				{
+					if (size < 1 || (type == "Char" && size > 255))
+						throw { message: "Nem megfelelő tömbméret: "+size };
+						
+					if (type == "Char") size++;
+				}
+			
 				_log("Variable " + name + " is added");
 				if (!Pseudo.COM.CASE_SENS) name = name.toLowerCase();
 				variables[name] = {
 					name: name,
 					funct: funct,
 					type: type,
-					mods: mods
+					mods: mods,
+					size: size
 				};
 				return true;
 			}
@@ -145,10 +154,15 @@ Pseudo.COM.Init = function(){
 	// Private method for allocation memory space for the defined variables
 	var _varsToMem = function(memory){
 		var address = memory.Read(0);
-		// TODO: allocate the required space instead of 1 byte
 		for (var variable in variables){
 			variables[variable].address = address;
-			address++;
+			if (variables[variable].size != undefined)
+			{
+				address += parseInt(variables[variable].size);
+			}
+			else{
+				address++;
+			}
 		}
 		// TODO: variable start value maybe should be a random value
 		memory.Write(0,address);
@@ -158,7 +172,7 @@ Pseudo.COM.Init = function(){
 	
 	return {
 		// Public scope
-		AddVariable: function(name, funct, type, mods) { return _addVariable(name, funct, type, mods); },
+		AddVariable: function(name, funct, type, mods, size) { return _addVariable(name, funct, type, mods, size); },
 		ClearVariables: function() { _clearVariables(); },
 		RemoveVariable: function() {},
 		Compile: function(memory, code){ return _compile(memory, code); }

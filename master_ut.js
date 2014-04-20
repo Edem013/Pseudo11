@@ -21,21 +21,44 @@ Pseudo.StartUnitTest = function()
 		// Define test case of the main namespace
 		function MainTestCase()
 		{
+			function setUp()
+			{
+				Pseudo.StartUnitTest.Result = "";
+			};
+			
 			function test_CreateTestApp()
 			{
 				//this.getTestObject();
 			
 				Pseudo.StartUnitTest.App =
-					Pseudo.Init(function(e){Pseudo.StartUnitTest.Result = e;});
+					Pseudo.Init(function(e){Pseudo.StartUnitTest.Result += "" + e;});
 					
 				jsUnity.assertions.assertNotUndefined(Pseudo.StartUnitTest.App, 
 					"Unable to create test application!");
 			};
 			
-			function test_temp()
+			function test_9_1_4_Eratosztenesz()
 			{
-				//this.getTestObject();
-			}
+				Pseudo.StartUnitTest.App.ClearVariables();
+				Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false});
+				Pseudo.StartUnitTest.App.AddVariable("p","p","Integer",{i: false, m:true, o: false});
+				Pseudo.StartUnitTest.App.AddVariable("a","a","Boolean",{i: false, m:true, o: false}, 10);
+				Pseudo.StartUnitTest.App.Run(
+					"for I <- 2, 10\n" +
+					"  A[I] <- igaz\n" +
+					"for P <- 2, 10\n" +
+					"  if A[P] = igaz\n" +
+					"    for I<- 2*P, 10, P\n" +
+					"      A[I] <- hamis\n" +
+					"For I <- 2, 10\n" +
+					"  if A[I] = igaz\n" +
+					"    if I <> 2\n" +
+					"      KI: \", \"\n" +
+					"    Ki: I"
+				, "");
+				Pseudo.Options.Log.DisableAll();
+				jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "2, 3, 5, 7", "");
+			};
 		};
 		
 		// Collect every test-case
@@ -57,6 +80,7 @@ Pseudo.StartUnitTest = function()
 		var failedTests = [];
 		
 		// Start the test
+		Pseudo.Options.Log.DisableAll();
 		for (var i=0; i<testCases.length; i++)
 		{
 			var actualTestCase = testCases[i];

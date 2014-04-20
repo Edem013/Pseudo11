@@ -115,6 +115,24 @@ Pseudo.COM.Scanner.Init = function(){
 						throw { message: "Hibás karakter konstans" };
 					}
 				}
+				
+				// Add string constants
+				else if (inputText.charAt(i) == "\"")
+				{
+					var sztring = inputText.charAt(i);
+	
+					while ((inputText.charAt(i+1) != "") && (inputText.charAt(i+1) != "\"") ){
+						sztring += inputText.charAt(i+1);
+						i++;
+					}
+					
+					if (inputText.charAt(i+1) == "")
+						throw { message: "Hibás sztring konstans!" };
+						
+					sztring += inputText.charAt(i+1);
+					i++;
+					tokens.push(sztring);
+				}
 					
 				// Skip white characters
 				else if ( _isWhiteChar(inputText.charAt(i)) ){

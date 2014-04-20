@@ -1,6 +1,10 @@
 ﻿// Method for containing automatic test cases
 Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 {	
+	function setUp()
+	{
+		Pseudo.StartUnitTest.Result = "";
+	};
 	
 	function test_AndOperator1()
 	{
@@ -10,7 +14,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1=1 and 2=2 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_AndOperator2()
@@ -54,7 +58,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=1 and 2=2) and ( 3=3 and 4=4) )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 51, "");
 	};
 	
 	function test_AndOperator6()
@@ -109,7 +113,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF (  1=1 and 2=2 and 3=3 and 4=4 )\n" + 
 			"  Ki: 8",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 8, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 78, "");
 	};
 	
 	function test_AndOperator11()
@@ -131,7 +135,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=1 or 2=2) or ( 3=3 or 4=4) )\n" + 
 			"  Ki: 2",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 12, "");
 	};
 	
 	function test_OrOperator2()
@@ -153,7 +157,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=1 or 2=3) or ( 3=4 or 4=5) )\n" + 
 			"  Ki: 6",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 6, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 56, "");
 	};
 	
 	function test_OrOperator4()
@@ -164,7 +168,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=2 or 2=2) or ( 3=4 or 4=5) )\n" + 
 			"  Ki: 8",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 8, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 78, "");
 	};
 	
 	function test_OrOperator5()
@@ -175,7 +179,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=2 or 2=3) or ( 3=3 or 4=5) )\n" + 
 			"  Ki: 10",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 910, "");
 		
 	};
 	
@@ -187,7 +191,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( ( 1=2 or 2=3) or ( 3=4 or 5=5) )\n" + 
 			"  Ki: 12",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 12, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1112, "");
 	};
 	
 	function test_OrOperator7()
@@ -198,7 +202,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1=2 or 2=3 or 3=3 or 5=6 )\n" + 
 			"  Ki: 14",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 14, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1314, "");
 	};
 	
 	function test_OrOperator8()
@@ -220,7 +224,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1+3=2+5 or ((2+5=3+5 and 3+3=5+3) or 5+3=6+2) )\n" + 
 			"  Ki: 2",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 12, "");
 	};
 	
 	function test_AndOrOperator2()
@@ -242,7 +246,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1+3=2+5 or ((2+6=3+5 and 3+2+3=5+3) or 5+3=6+2) )\n" + 
 			"  Ki: 6",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 6, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 56, "");
 	};
 	
 	function test_ForCycle1()
@@ -371,6 +375,20 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"");
 		Pseudo.Options.Log.DisableAll();
 		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 6, "");
+	};
+	
+	function test_ForCycle9()
+	{
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Integer",{i: false, m:true, o: false});
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "", 
+			"J <- 0 \n" +
+			"For I <- 1, 5 \n" +
+			"  J <- J + 2 \n" +
+			"Ki: J",
+			"");
 	};
 	
 	function test_WhileCycle1()
@@ -510,7 +528,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1=1 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareEqual2()
@@ -535,7 +553,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareEqual4()
@@ -562,7 +580,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 0, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 40, "");
 	};
 	
 	function test_CompareEqual6()
@@ -577,7 +595,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 10 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_CompareLess1()
@@ -588,7 +606,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1<2 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareLess2()
@@ -613,7 +631,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareLess4()
@@ -628,7 +646,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 10 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_CompareNotEqual1()
@@ -639,7 +657,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1<>2 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareNotEqual2()
@@ -664,7 +682,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareNotEqual4()
@@ -679,7 +697,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 10 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_CompareLessOrEqual1()
@@ -692,7 +710,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki:1",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareLessOrEqual2()
@@ -703,7 +721,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1<=1 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareLessOrEqual3()
@@ -728,7 +746,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareLessOrEqual5()
@@ -743,7 +761,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 10 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_CompareGreater1()
@@ -776,7 +794,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1>0 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareGreater4()
@@ -790,7 +808,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareGreater5()
@@ -805,7 +823,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 10 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_CompareGreaterOrEqual1()
@@ -829,7 +847,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1>=1 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareGreaterOrEqual3()
@@ -840,7 +858,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"IF ( 1>=0 )\n" + 
 			"  Ki:1",
 			"");
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 1, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 41, "");
 	};
 	
 	function test_CompareGreaterOrEqual4()
@@ -854,7 +872,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"Ki: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 0, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 40, "");
 	};
 	
 	function test_CompareGreaterOrEqual5()
@@ -885,7 +903,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 410, "");
 	};
 	
 	function test_RepeatCycle2()
@@ -902,10 +920,10 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, -10, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "4-10", "");
 	};
 	
-	function test_RepeatCycle2()
+	function test_RepeatCycle3()
 	{
 		//Pseudo.Options.Log.EnableAll();
 		Pseudo.StartUnitTest.App.ClearVariables();
@@ -927,10 +945,10 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: K",
 			""); // ( 2 + 4 + 6 + 8 + 10)
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 30, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 430, "");
 	};
 	
-	function test_RepeatCycle3()
+	function test_RepeatCycle4()
 	{
 		//Pseudo.Options.Log.EnableAll();
 		Pseudo.StartUnitTest.App.ClearVariables();
@@ -947,10 +965,10 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: I+J",
 			""); // 7 step -> J = 21, I = 14
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 35, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 435, "");
 	};
 	
-	function test_RepeatCycle4()
+	function test_RepeatCycle5()
 	{
 		//Pseudo.Options.Log.EnableAll();
 		Pseudo.StartUnitTest.App.ClearVariables();
@@ -963,7 +981,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: I",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 5, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 45, "");
 	};
 	
 	function test_Expressions1()
@@ -975,7 +993,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 5",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 5, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 45, "");
 	};
 	
 	function test_Expressions2()
@@ -987,7 +1005,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 6",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 6, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 46, "");
 	};
 	
 	function test_Expressions3()
@@ -1011,7 +1029,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 7",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 7, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 47, "");
 	};
 	
 	function test_Expressions5()
@@ -1023,7 +1041,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 7",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 7, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 107, "");
 	};
 	
 	function test_Expressions6()
@@ -1049,7 +1067,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  KI: 52",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 52, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 5352, "");
 	};
 	
 	function test_Expressions8()
@@ -1416,7 +1434,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki: 56 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 56, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 956, "");
 	};
 	
 	function test_Not11()
@@ -1442,7 +1460,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki: 23 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 23, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 5923, "");
 	};
 	
 	function test_Not13()
@@ -1455,7 +1473,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki: 95 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 95, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2495, "");
 	};
 	
 	function test_Not14()
@@ -1481,7 +1499,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki: 18 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 18, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 518, "");
 	};
 	
 	function test_ConvertBool2()
@@ -1557,7 +1575,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"  Ki: 8 \n",
 			"");
 		Pseudo.Options.Log.DisableAll();
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 8, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 48, "");
 	};
 	
 	function test_Bool1()
@@ -1722,7 +1740,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 		Pseudo.StartUnitTest.App.Run(
 			"Ki: 12.1 / 4.4", "");
 		
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result.toFixed(2), 2.75, "");
+		jsUnity.assertions.assertEqual(parseFloat(Pseudo.StartUnitTest.Result).toFixed(2), 2.75, "");
 	};
 	
 	function test_Float7()
@@ -1746,7 +1764,7 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			"KI: I"
 			, "");
 		
-		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result.toFixed(2), 2.75, "");
+		jsUnity.assertions.assertEqual(parseFloat(Pseudo.StartUnitTest.Result).toFixed(2), 2.75, "");
 	};
 	
 	function test_Float9()
@@ -1998,5 +2016,600 @@ Pseudo.COM.CodeGenerator.StartUnitTest = function CodeGeneratorTestCase()
 			, "");
 		
 		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 2, "");
+	};
+	
+	function test_Array1()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[0]"
+			, "");
+	};
+	
+	function test_Array2()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[-4]"
+			, "");
+	};
+	
+	function test_Array3()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[14]"
+			, "");
+	};
+	
+	function test_Array4()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I[2] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 6, "");
+	};
+	
+	function test_Array5()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[0] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_Array6()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[-3] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_Array7()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[13] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_Array8()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I[2] <- 6 \n" +
+			"I[3] <- 12 \n" +
+			"KI: I[2] + I[3]"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 18, "");
+	};
+	
+	function test_Array9()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_Array10()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I[]"
+			, "");
+	};
+	
+	function test_Array11()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I['s'] <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_Array12()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[4] <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I['d']"
+			, "");
+	};
+	
+	function test_Array13()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[4] <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I[igaz]"
+			, "");
+	};
+	
+	function test_Array14()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[4] <- 6 \n" +
+			"I[1.0] <- 12 \n" +
+			"KI: I[3]"
+			, "");
+	};
+	
+	function test_Array15()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[4] <- 6 \n" +
+			"I[1][3] <- 12 \n" +
+			"KI: I[3]"
+			, "");
+	};
+	
+	function test_Array16()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[4 <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I[3]"
+			, "");
+	};
+	
+	function test_Array17()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.AddVariable("k","k","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"J <- 8 \n" +
+			"I[1] <- 2 \n" +
+			"I[2] <- 6 \n" +
+			"I[3] <- 11 \n" +
+			"I[4] <- 1 \n" +
+			"I[5] <- 3 \n" +
+			"For K <- 1, 5\n" +
+			"  J <- J + I[K]\n" +
+			"KI: J"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 31, "");
+	};
+	
+	function test_Array18()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Float",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.AddVariable("k","k","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"J <- 8 \n" +
+			"I[1] <- 2.25 \n" +
+			"I[2] <- 6.5 \n" +
+			"I[3] <- 11 \n" +
+			"I[4] <- 1 \n" +
+			"I[5] <- 3.25 \n" +
+			"For K <- 1, 5\n" +
+			"  J <- J + I[K]\n" +
+			"KI: J"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 31, "");
+	};
+	
+	function test_Array19()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Float",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Float",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.AddVariable("k","k","Integer",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"J <- 8 \n" +
+			"I[1] <- 2.25 \n" +
+			"I[2] <- 6.5 \n" +
+			"I[3] <- 11 \n" +
+			"I[4] <- 1 \n" +
+			"I[5] <- 3.25 \n" +
+			"For K <- 2, 6\n" +
+			"  J <- J + I[K-1]\n" +
+			"KI: J"
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 32, "");
+	};
+	
+	function test_Array20()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I <- 12 \n" +
+			"KI: I[2]"
+		
+
+		, "");
+	};
+	
+	function test_Array21()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Integer",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I[2] <- 6 \n" +
+			"I[1] <- 12 \n" +
+			"KI: I"
+			, "");
+	};
+	
+	function test_Array22()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Float",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Float",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.AddVariable("k","k","Char",{i: false, m:true, o: false},3);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"J <- 8 \n" +
+			"I[1] <- 2.25 \n" +
+			"I[2] <- 6.5 \n" +
+			"I[3] <- 11 \n" +
+			"I[4] <- 1 \n" +
+			"I[5] <- 3.25 \n" +
+			"For K <- 2, 6\n" +
+			"  J <- J + I[K-1]\n" +
+			"KI: J"
+			, "");
+	};
+	
+	function test_Array23()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Float",{i: false, m:true, o: false}, 5);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Float",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.AddVariable("k","k","Integer",{i: false, m:true, o: false},3);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"J <- 8 \n" +
+			"I[1] <- 2.25 \n" +
+			"I[2] <- 6.5 \n" +
+			"I[3] <- 11 \n" +
+			"I[4] <- 1 \n" +
+			"I[5] <- 3.25 \n" +
+			"For K <- 2, 6\n" +
+			"  J <- J + I[K-1]\n" +
+			"KI: J"
+			, "");
+	};
+	
+	function test_String1()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"abcd\" + \"efghi\" \n" +
+			"KI: I"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghi", "");
+	};
+	
+	function test_String2()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: \"ab\" + \"cd\" + \"efghi\""
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghi", "");
+	};
+	
+	function test_String3()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"abcd\" + \"efghi\" \n" +
+			"KI: I + \"jk\""
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghijk", "");
+	};
+	
+	function test_String4()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Char",{i: false, m:true, o: false}, 15);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"abcd\" + \"efghi\" \n" +
+			"J <- I + \"jk\" \n" +
+			"KI: J"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghijk", "");
+	};
+	
+	function test_String5()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: \"abc\" + 'd' + \"efghi\""
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghi", "");
+	};
+	
+	function test_String6()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Char",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"abcd\" + \"efghi\" \n" +
+			"J <- 'f' \n" +
+			"KI: I + J + I[2]"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "abcdefghifb", "");
+	};
+	
+	function test_String7()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"abcd\"\n" +
+			"KI: I[2]"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "b", "");
+	};
+	
+	function test_String8()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 9);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"0123456789\"\n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_String9()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"J <- \"012345678\"\n" +
+			"I <- \"012345678\"\n" +
+			"KI: J"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "012345678", "");
+	};
+	
+	function test_String10()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 9);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"01234\" + \"56789\"\n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_String11()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"01234\" - \"56789\"\n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_String12()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 9);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"0d34\" + \"56d9\"\n" +
+			"KI: I[11]"
+			, "");
+	};
+	
+	function test_String13()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"0d34\" + \"56d9\"\n" +
+			"KI: I[8]"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "9", "");
+	};
+	
+	function test_String14()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"01234\" / \"56789\"\n" +
+			"KI: I[2]"
+			, "");
+	};
+	
+	function test_String15()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Integer",{i: false, m:true, o: false});
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"J <- 3+3\n" +
+			"I <- \"Value: \" + J\n" +
+			"KI: \"My \" + I "
+			, "");
+	};
+	
+	function test_String16()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"Value: \" + 6\n" +
+			"KI: \"My \" + I + 1"
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "My Value: 61", "");
+	};
+	
+	function test_String17()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"KI: \"My \" + \"4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456\" "
+			, "");
+	};
+	
+	function test_String18()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.Run(
+			"KI: \"123\" + \"456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345\" "
+			, "");
+		Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345", "");
+	};
+	
+	function test_String19()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.AddVariable("j","j","Char",{i: false, m:true, o: false});
+		Pseudo.StartUnitTest.App.Run(
+			"J <- 'd'\n" +
+			"I <- J\n" +
+			"KI: I "
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "d", "");
+	};
+	
+	function test_String20()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		//Pseudo.Options.Log.EnableAll();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 10);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- 'T'\n" +
+			"KI: I "
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "T", "");
+	};
+	
+	
+	
+	function test_String21()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 255);
+		jsUnity.assertions.assertException(Pseudo.StartUnitTest.App.Run, "",
+			"I <- \"My \" + \"4567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456\" \n" +
+			"Ki: I"
+			, "");
+	};
+	
+	
+	function test_String22()
+	{
+		Pseudo.StartUnitTest.App.ClearVariables();
+		Pseudo.StartUnitTest.App.AddVariable("i","i","Char",{i: false, m:true, o: false}, 255);
+		Pseudo.StartUnitTest.App.Run(
+			"I <- \"123\" + \"456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345\" \n" +
+			"Ki: I "
+			, "");
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345", "");
 	};
 }

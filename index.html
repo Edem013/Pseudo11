@@ -27,7 +27,7 @@
                 
 					<table class="adatszerk" id="adatSzerkTabla">
 						<tr>
-							<td colspan=5 id="adatszerkCim">
+							<td colspan=6 id="adatszerkCim">
 								Adatszerkezeti táblázat:
 							</td>
 						</tr>
@@ -41,6 +41,9 @@
 							<td class="adatszerkCella" style="width:1px;">
 								Típus
 							</td>
+							<td class="adatszerkCella" style="width:1px;">
+								Méret
+							</td>
 							<td class="adatszerkCella">
 								Jelleg
 							</td>
@@ -52,14 +55,19 @@
 							<td><input type="text" class="funkcioI" id="funk0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
 							<td><input type="text" class="azonI" id="azon0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
 							<td>
-								<select class="tipusI" id="tipus0" onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);">
+								<select class="tipusI" id="tipus0" onchange="adatSzerk.getSizeOfArray(0,this)" onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);">
 									<option> </option>
-									<option>Egész</option>
-									<option>Valós</option>
-									<option>Karakter</option>
-									<option>Logikai</option>
+									<option value="Integer">Egész</option>
+									<option value="Float">Valós</option>
+									<option value="Char">Karakter</option>
+									<option value="Boolean">Logikai</option>
+									<option value="String">Sztring</option>
+									<option value="Integer[]">Egész tömb</option>
+									<option value="Float[]">Valós tömb</option>
+									<option value="Boolean[]">Logikai tömb</option>
 								</select>
 							</td>
+							<td><input disabled="disabled" type="text" class="meretI" id="meret0"  onfocus="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/></td>
 							<td>
 								<input type="checkbox" id="checkI0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);"/>I
 								<input type="checkbox" id="checkO0" onfocus="adatSzerk.sorKijelol(0,this);" onclick="adatSzerk.sorKijelol(0,this);" onblur="adatSzerk.sorKijelolSzunt(0);" />O
@@ -162,9 +170,15 @@
 	<script>
 	
 		// Method for writing data on the screen
+		var ScreenCursorPos = 0;
 		function AddToScreen(e)
 		{
+			if (ScreenCursorPos + (""+e).length > 80){
+				document.getElementById('screen').innerHTML += "<br>";
+				ScreenCursorPos = 0;
+			}
 			document.getElementById('screen').innerHTML += e;
+			ScreenCursorPos += (""+e).length;
 		}
 	
 		// Initialize the application
@@ -183,19 +197,32 @@
 		// Run the specified code
 		function PseudoRun(){
 			try{
+				ScreenCursorPos = 0;
 				adatSzerk.sorEllen();
 				myApp.ClearVariables();
 				for( var i=0; i<adatSzerk.sorokSzama; i++){
-					var type = "";
 					switch(adatSzerk.sorok[i].tipus)
 					{
-						case 1: type = "Integer"; break;
-						case 2: type = "Float"; break;
-						case 3: type = "Char"; break;
-						case 4: type = "Boolean"; break;
+						case "Integer":
+						case "Float":
+						case "Char":
+						case "Boolean":
+							myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, adatSzerk.sorok[i].tipus, {i: false, m:true, o: false});
+							break;
+						case "Integer[]":
+							myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, "Integer", {i: false, m:true, o: false}, adatSzerk.sorok[i].meret);
+							break;
+						case "Float[]":
+							myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, "Float", {i: false, m:true, o: false}, adatSzerk.sorok[i].meret);
+							break;
+						case "Boolean[]":
+							myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, "Boolean", {i: false, m:true, o: false}, adatSzerk.sorok[i].meret);
+							break;
+						case "String":
+							myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, "Char", {i: false, m:true, o: false}, adatSzerk.sorok[i].meret);
+							break;
 						default: throw { message: "Ismeretlen változó típus: " + adatSzerk.sorok[i].tipus };
 					}
-					myApp.AddVariable(adatSzerk.sorok[i].azon, adatSzerk.sorok[i].funkcio, type, {i: false, m:true, o: false});
 				}
 				document.getElementById('screen').innerHTML = "";
 				Screen.showScreen();
@@ -209,6 +236,8 @@
 		function StartUnitTest(){
 			myApp && Pseudo.StartUnitTest && Pseudo.StartUnitTest();
 		}
+		
+		
 	</script>
 </body>
 </html>

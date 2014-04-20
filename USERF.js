@@ -12,7 +12,8 @@ function adatSzerkSor(){
 	this.setDatas = function(sorId){
 	  this.funkcio = document.getElementById("funk"+sorId).value.trim();
     this.azon = document.getElementById("azon"+sorId).value.trim();
-	  this.tipus = document.getElementById("tipus"+sorId).selectedIndex;
+	  this.tipus = document.getElementById("tipus"+sorId).value;
+	  this.meret = document.getElementById("meret"+sorId).value;
 	  this.jellegI = document.getElementById("checkI"+sorId).checked;
 		this.jellegO = document.getElementById("checkO"+sorId).checked;
 		this.jellegM = document.getElementById("checkM"+sorId).checked;
@@ -74,10 +75,19 @@ adatSzerk = {
                 newcell.childNodes[j].setAttribute('id',"tipus"+(sorId+1));
 								newcell.childNodes[j].setAttribute("onfocus","adatSzerk.sorKijelol("+(sorId+1)+",this);");
 								newcell.childNodes[j].setAttribute("onblur","adatSzerk.sorKijelolSzunt("+(sorId+1)+");");
+								newcell.childNodes[j].setAttribute("onchange","adatSzerk.getSizeOfArray("+(sorId+1)+",this);");
+
 							}
 						}
 						break;
 					case 3:
+						newcell.childNodes[0].setAttribute("id","meret"+(sorId+1));
+						newcell.childNodes[0].value = "";
+						newcell.childNodes[0].disabled = true;
+						newcell.childNodes[0].setAttribute("onfocus","adatSzerk.sorKijelol("+(sorId+1)+",this);");
+						newcell.childNodes[0].setAttribute("onblur","adatSzerk.sorKijelolSzunt("+(sorId+1)+");");
+						break;
+					case 4:
 						for( var j=0; j<newcell.childNodes.length; j++){
 						  if (newcell.childNodes[j].type == "checkbox"){
 							  if (newcell.childNodes[j].getAttribute("id") == ("checkI"+(sorId))){
@@ -94,7 +104,7 @@ adatSzerk = {
 							}
 						}
 						break;
-					case 4:
+					case 5:
 					  for( var j=0; j<newcell.childNodes.length; j++){
 						  if (typeof(newcell.childNodes[j].src) != "undefined"){
 							  newcell.childNodes[j].setAttribute("id","torles"+(sorId+1));
@@ -195,11 +205,18 @@ adatSzerk = {
 		}
 	},
 	
-	/* sor vizsgálata, hogy van-e hiányzó elem */ 
+	/* sor vizsgálata, hogy van-e hiányzó elem */
+	/* vagy tartalmaz hibás definíciót */
 	sorHianyos: function(sorId){
 		if (document.getElementById("funk"+sorId).value.trim()=="" ||
 			  document.getElementById("azon"+sorId).value.trim()=="" ||
 				document.getElementById("tipus"+sorId).selectedIndex == 0 ||
+				
+				(document.getElementById("meret"+sorId).value != "" &&
+					(isNaN(document.getElementById("meret"+sorId).value) || 
+					!/^[0-9]+$/.test(document.getElementById("meret"+sorId).value) ||
+					document.getElementById("meret"+sorId).value == 0)) ||
+				
 				(document.getElementById("checkI"+sorId).checked == false &&
 				document.getElementById("checkO"+sorId).checked == false &&
 				document.getElementById("checkM"+sorId).checked == false)) return true;
@@ -212,6 +229,8 @@ adatSzerk = {
 	  document.getElementById("funk"+hova).value = document.getElementById("funk"+honnan).value;
 		document.getElementById("azon"+hova).value = document.getElementById("azon"+honnan).value;
 		document.getElementById("tipus"+hova).selectedIndex = document.getElementById("tipus"+honnan).selectedIndex;
+		document.getElementById("meret"+hova).value = document.getElementById("meret"+honnan).value;
+		document.getElementById("meret"+hova).disabled = document.getElementById("meret"+honnan).disabled;
 		document.getElementById("checkI"+hova).checked = document.getElementById("checkI"+honnan).checked;
 		document.getElementById("checkO"+hova).checked = document.getElementById("checkO"+honnan).checked;
 		document.getElementById("checkM"+hova).checked = document.getElementById("checkM"+honnan).checked;
@@ -233,7 +252,40 @@ adatSzerk = {
 		document.getElementById("checkI"+sorId).checked = false;
 		document.getElementById("checkO"+sorId).checked = false;
 		document.getElementById("checkM"+sorId).checked = false;
-	}	 
+	},
+	
+	getSizeOfArray: function(sorId, item){
+		if (item.value == "String" || item.value == "Integer[]" ||
+			item.value == "Float[]" || item.value == "Boolean[]")
+		{
+			var defSize = (item.value == "String" ? 255 : 1);
+			var size = prompt("Kérem adja meg a tömb méretét!", defSize);
+			
+			if (size < 1)
+			{
+				alert("A tömb mérete nem lehet nulla vagy negatív érték!");
+				item.selectedIndex = 0;
+			}
+			else
+			{
+				if ( isNaN(size) )
+				{
+					alert("Nem szám érték!");
+					item.selectedIndex = 0;
+				}
+				else
+				{
+					document.getElementById("meret"+sorId).value = parseInt(size);
+					document.getElementById("meret"+sorId).disabled = false;
+				}
+			}
+		}
+		else
+		{
+			document.getElementById("meret"+sorId).value = "";
+			document.getElementById("meret"+sorId).disabled = true;
+		}
+	}
 }
 
 codeBox = {

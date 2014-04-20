@@ -284,12 +284,137 @@ Pseudo.COM.CodeGenerator.Init = function(){
 					
 				// Variable assignment
 				case "assign":
+				
+					// If exp is operator -> resultType == string
+					// if exp is variable -> resultType == Char && size == x
+					// if exp is string constant -> resultType == string
+					if (root.exp.resultType == "String" || root.exp.resultType == "Char")
+					{
+						/*
+							1. Load start address of the variable (S)
+							2. Load end address of the variable (E)
+							3. Iterate for every string under exp
+								3.1. If current string is a constant
+									3.1.1. Write string into memory
+								3.2. Load start address of the current string (C)
+								3.3. Iterate if string[C] is not zero
+									3.3.1. If S > E
+										3.3.1.1 Exception
+									3.3.2. Copy string[C] to address S
+									3.3.3. Increment S and C
+						*/
+						
+						// Jump over the variable part
+						_insert("LDA");
+						memory.Write(address, 0);
+						address += 1;
+						_insert("LDB");
+						memory.Write(address, 1);
+						address += 1;
+						_insert("CMP_EQ");
+						_insert("JMP");
+						var varPart = address;
+						address+=1;
+						
+						// start, end, and current variables
+						var start = address;
+						_insert(variables[root.identVar.value].address);
+						var end = variables[root.identVar.value].address
+								  + variables[root.identVar.value].size-1;
+						var current = address;
+						_insert(0);
+						
+						memory.Write(varPart, address);
+								  
+						_loadString(root.exp, start, end, current);
+						
+						// insert 0 as end char
+						
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H"); // start address
+						_insert("STACKA");
+						_insert("LDB_STACK");
+						_insert("LDA");
+						_insert(end);
+						_insert("CMP_L");
+						_insert("JMP");
+						var outOfBound = address;
+						address+=1;
+						_insert("OUTB");
+						memory.Write(outOfBound, address);
+						
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H");
+						_insert("STACKA");
+						_insert("LDH_STACK");
+						_insert("LDA");
+						_insert(0);
+						_insert("STRA_H");
+						
+						break;
+					}
+				
 					// Generate code of the expression
 					_walk(root.exp);
-					// Save the address of the variable
-					_insert("LDH");
-					memory.Write(address, variables[root.identVar.value].address);
-					address++;
+					
+					
+					if(root.identVar.size != undefined)
+					{
+						_walk(root.identVar.indexExp);
+						_insert("LDB_STACK");
+						_insert("STACKB");
+						// check that index is not out of bound
+						_insert("LDA");
+						memory.Write(address, root.identVar.size);
+						address++;
+						_insert("CMP_L"); // 10 < I
+						_insert("STACKC");
+						_insert("STACKB");
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, 1);
+						address++;
+						_insert("CMP_L"); // I < 0
+						_insert("STACKC");
+						
+						_insert("LDA_STACK");
+						_insert("LDB_STACK");
+						_insert("ADDA_B");
+						_insert("STACKC");
+						_insert("LDB_STACK");
+						_insert("LDA");
+						memory.Write(address, 0);
+						address += 1;
+						_insert("CMP_L");
+						
+						_insert("JMP");
+						memory.Write(address, address+2);
+						address++;
+						_insert("OUTB");
+						
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, variables[root.identVar.value].address);
+						address++;
+						_insert("ADDA_B");
+						_insert("STACKC");
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, 1);
+						address++;
+						_insert("SUBA_B");
+						_insert("STACKC");
+						_insert("LDH_STACK");
+					}
+					else
+					{
+						// Save the address of the variable
+						_insert("LDH");
+						memory.Write(address, variables[root.identVar.value].address);
+						address++;
+					}
 					// Load value of the expression into the variable
 					_insert("LDA_STACK");
 					if (root.identVar.resultType == "Integer")
@@ -344,6 +469,142 @@ Pseudo.COM.CodeGenerator.Init = function(){
 					
 				// Print statement
 				case "print":
+				
+					// If result is a string
+					if (root.value.resultType == "String" ||
+						(root.value.resultType == "Char" && root.value.indexExp == undefined))
+					{
+						// Load result into a specific memory space
+						// Jump over the variable part
+						_insert("LDA");
+						memory.Write(address, 0);
+						address += 1;
+						_insert("LDB");
+						memory.Write(address, 1);
+						address += 1;
+						_insert("CMP_EQ");
+						_insert("JMP");
+						var varPart = address;
+						address+=1;
+						
+						// start, end, and current variables
+						var start = address;
+						_insert(0);
+						var end = 2 + 255 ;
+						var current = address;
+						_insert(0);
+						
+						memory.Write(varPart, address);
+						
+						// set start value to 2
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA");
+						_insert(2);
+						_insert("STRA_H");
+								  
+						_loadString(root.value, start, end, current);
+						
+						// insert 0 as end char
+						
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H"); // start address
+						_insert("STACKA");
+						_insert("LDB_STACK");
+						_insert("LDA");
+						_insert(end);
+						_insert("CMP_L");
+						_insert("JMP");
+						var outOfBound = address;
+						address+=1;
+						_insert("OUTB");
+						memory.Write(outOfBound, address);
+						
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H");
+						_insert("STACKA");
+						_insert("LDH_STACK");
+						_insert("LDA");
+						_insert(0);
+						_insert("STRA_H");
+						
+						// set back start
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA");
+						_insert(2);
+						_insert("STRA_H");
+						
+						var startExpAddr = address;
+						
+						// Start to print
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H");
+						_insert("STACKA");
+						_insert("LDH_STACK");
+						_insert("LDA_H"); // actual char
+						
+						_insert("LDB");
+						_insert(0);
+						_insert("CMP_EQ");
+						_insert("STACKC");
+						_negate();
+				
+						// Jump into the end of the core if compare returns with false
+						_insert("JMP");
+						var printEndAddr = address;
+						address += 1;
+						
+						// Check if start address is lower than the end address
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H"); // start address
+						_insert("STACKA");
+						_insert("LDB_STACK");
+						_insert("LDA");
+						_insert(end);
+						_insert("CMP_L");
+						_insert("JMP");
+						var outOfBound = address;
+						address+=1;
+						_insert("OUTB");
+						memory.Write(outOfBound, address);
+						
+						
+						// Print Char
+						_insert("LDH");
+						_insert(start);
+						_insert("LDA_H");
+						_insert("STACKA");
+						_insert("LDH_STACK");
+						_insert("LDA_H"); // actual char
+						_insert("PRINTA_C");
+						
+						//Increment address
+						_incValOfAddr(start);
+						
+						// Jump back to the start of the expression
+						_insert("LDA");
+						memory.Write(address, 0);
+						address += 1;
+						_insert("LDB");
+						memory.Write(address, 1);
+						address += 1;
+						_insert("CMP_EQ");
+						_insert("JMP");
+						memory.Write(address, startExpAddr);
+						address+=1;
+						
+						memory.Write(printEndAddr, address);
+						
+						
+						
+						break;
+					}
+				
 					// Generate code of the expression
 					_walk(root.value);
 					_insert("LDA_STACK");
@@ -360,10 +621,62 @@ Pseudo.COM.CodeGenerator.Init = function(){
 					
 				// Variable
 				case "identVar":
-					// Load address of the variable
-					_insert("LDH");
-					memory.Write(address, variables[root.value].address);
-					address++;
+				
+					// If variable is an array
+					if(root.size != undefined)
+					{
+						_walk(root.indexExp);
+						_insert("LDB_STACK");
+						_insert("STACKB");
+						// check that index is not out of bound
+						_insert("LDA");
+						memory.Write(address, root.size);
+						address++;
+						_insert("CMP_L"); // Limit < I
+						_insert("STACKC");
+						_insert("STACKB");
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, 1);
+						address++;
+						_insert("CMP_L"); // I < 0
+						_insert("STACKC");
+						
+						_insert("LDA_STACK");
+						_insert("LDB_STACK");
+						_insert("ADDA_B");
+						_insert("STACKC");
+						_insert("LDB_STACK");
+						_insert("LDA");
+						memory.Write(address, 0);
+						address += 1;
+						_insert("CMP_L");
+						
+						_insert("JMP");
+						memory.Write(address, address+2);
+						address++;
+						_insert("OUTB");
+						
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, variables[root.value].address);
+						address++;
+						_insert("ADDA_B");
+						_insert("STACKC");
+						_insert("LDA_STACK");
+						_insert("LDB");
+						memory.Write(address, 1);
+						address++;
+						_insert("SUBA_B");
+						_insert("STACKC");
+						_insert("LDH_STACK");
+					}
+					else{
+						// Load address of the variable
+						_insert("LDH");
+						memory.Write(address, variables[root.value].address);
+						address++;
+					}
 					// Load value from the address
 					_insert("LDA_H");
 					_insert("STACKA");
@@ -391,7 +704,7 @@ Pseudo.COM.CodeGenerator.Init = function(){
 				case "char":
 					// Load value
 					_insert("LDA");
-					memory.Write(address, root.value);
+					memory.Write(address, root.value.charCodeAt(0));
 					address++;
 					_insert("STACKA");
 					break;
@@ -582,7 +895,206 @@ Pseudo.COM.CodeGenerator.Init = function(){
 		memory.Write(address, 1);
 		address += 1;
 		_insert("CMP_EQ");
-	}
+	};
+	
+	// Method for string expressions
+	var _loadString = function(node, start, end, current){
+		if (node.name == "op")
+		{
+			_loadString(node.left, start, end, current);
+			_loadString(node.right, start, end, current);
+		}
+		else
+		{
+			if (node.name == "char" || node.name == "string" ||
+				(node.name == "identVar" && node.size != undefined && node.indexExp == undefined) ||
+				(node.name == "number" || node.name == "float"))
+			{
+				// Update current
+				_insert("LDH");
+				_insert(current);
+				_insert("LDA");
+				var currentAddr = address;
+				address++;
+				_insert("STRA_H");
+			
+				// Jump over the constant part
+				_insert("LDA");
+				memory.Write(address, 0);
+				address += 1;
+				_insert("LDB");
+				memory.Write(address, 1);
+				address += 1;
+				_insert("CMP_EQ");
+				_insert("JMP");
+				var constantPart = address;
+				address+=1;
+				memory.Write(currentAddr, address);
+				
+				// Variable part
+				if (node.name == "string")
+				{
+					for (var i = 0; i < node.value.length; i++)
+					{
+						_insert(node.value.charCodeAt(i));
+					}	
+					_insert(0);
+				}
+				else if ( node.name == "char" )
+				{
+					_insert(node.value.charCodeAt(i));
+					_insert(0);
+				}
+				else if (node.name == "number" || node.name == "float" )
+				{
+					var numStr = node.value.toString();
+					for(var i = 0; i< numStr.length; i++)
+						_insert(numStr.charCodeAt(i));
+					_insert(0);
+				}else{
+					memory.Write(currentAddr, variables[node.value].address);
+				}
+				
+				// Generate code of condition expression
+				var startExpAddr = address;
+				
+				memory.Write(constantPart, address);
+				//_walk(root.exp); current is not 0
+				_insert("LDH");
+				_insert(current);
+				_insert("LDA_H");
+				_insert("STACKA");
+				_insert("LDH_STACK");
+				_insert("LDA_H"); // actual char
+				
+				_insert("LDB");
+				_insert(0);
+				_insert("CMP_EQ");
+				_insert("STACKC");
+				_negate();
+				
+				
+				// Jump into the end of the core if compare returns with false
+				_insert("JMP");
+				var coreEndAddr = address;
+				address += 1;
+				
+				// Check if start address is lower than the end address
+				_insert("LDH");
+				_insert(start);
+				_insert("LDA_H"); // start address
+				_insert("STACKA");
+				_insert("LDB_STACK");
+				_insert("LDA");
+				_insert(end);
+				_insert("CMP_L");
+				_insert("JMP");
+				var outOfBound = address;
+				address+=1;
+				_insert("OUTB");
+				memory.Write(outOfBound, address);
+				
+				
+				// Copy char
+				_insert("LDH");
+				_insert(current);
+				_insert("LDA_H");
+				_insert("STACKA");
+				_insert("LDH_STACK");
+				_insert("LDA_H"); // actual char
+				_insert("STACKA");
+				
+				_insert("LDH");
+				_insert(start);
+				_insert("LDA_H");
+				_insert("STACKA");
+				_insert("LDH_STACK"); // start address
+				
+				_insert("LDA_STACK");
+				_insert("STRA_H");
+				
+				//Increment addresses
+				_incValOfAddr(current);
+				_incValOfAddr(start);
+				
+				// Jump back to the start of the expression
+				_insert("LDA");
+				memory.Write(address, 0);
+				address += 1;
+				_insert("LDB");
+				memory.Write(address, 1);
+				address += 1;
+				_insert("CMP_EQ");
+				_insert("JMP");
+				memory.Write(address, startExpAddr);
+				address+=1;
+				
+				memory.Write(coreEndAddr, address);
+			}
+			else if (node.name == "identVar" &&
+					(node.resultType == "Float" || node.resultType == "Integer"))
+			{
+				throw { message: "Nem megengedett egész vagy valós típusú változó!" };
+			}
+			else
+			{
+				// char identVars and char from string
+				
+				
+				_insert("LDH");
+				_insert(start);
+				_insert("LDA_H"); // start address
+				_insert("STACKA");
+				_insert("LDB_STACK");
+				_insert("LDA");
+				_insert(end);
+				_insert("CMP_L");
+				_insert("JMP");
+				var outOfBound = address;
+				address+=1;
+				_insert("OUTB");
+				memory.Write(outOfBound, address);
+				
+				// Copy char
+				
+				if (node.indexExp != undefined){
+					_walk(node);
+				}
+				else
+				{
+					_insert("LDH");
+					_insert(variables[node.value].address);
+					_insert("LDA_H");
+					_insert("STACKA");
+				}
+				
+				_insert("LDH");
+				_insert(start);
+				_insert("LDA_H");
+				_insert("STACKA");
+				_insert("LDH_STACK"); // start address
+				
+				_insert("LDA_STACK");
+				_insert("STRA_H");
+				
+				//Increment addresses
+				_incValOfAddr(start);
+			}
+		}
+	};
+	
+	var _incValOfAddr = function(addr)
+	{
+		_insert("LDH");
+		_insert(addr);
+		_insert("LDA_H");
+		_insert("LDB");
+		_insert(1);
+		_insert("ADDA_B");
+		_insert("STACKC");
+		_insert("LDA_STACK");
+		_insert("STRA_H");
+	};
 	
 	// End of private scope
 	

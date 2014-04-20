@@ -57,40 +57,11 @@ Pseudo.Init = function(_printMethod)
 		Pseudo._log("ERROR: " + e.message);
 		return;
 	}
-	//test run
-	/*com.AddVariable("i", "seged", "integer", { i: false, m: true, o: true });
-	var code = "i <- 2 + 5 * 7 " + "\n" + "KI: i";
-	com.Compile(mem, code);
-	
-	try{
-		var ip = mem.Read(0);
-		Pseudo._log("Set IP to: " + ip); 
-		cpu.SetInstructionPointer(ip);
-		var max = mem.Read(1);
-		
-		console.log("memory contains the following:");
-		for (i = ip; i <= max; i++)
-		{
-			console.log(i +": "+mem.Read(i));
-		}
-		console.log("memory end, start run");
-		
-		while(cpu.GetInstructionPointer() <= max){
-			var inst = mem.Read(cpu.GetInstructionPointer());
-			Pseudo._log("Try to run: " + inst);
-			var callback = cpu.Execute(inst);
-			if (callback != null && typeof(callback) === "function")
-				callback(mem);
-		}
-	}catch(e){
-		Pseudo._log("ERROR: " + e.message);
-	}*/
-	//end of test run
 	
 	// Private method for variable declaration
 	// Method returns true if declaration was successful or throw an exception.
-	var _addVariable = function(name, func, type, mods){
-		if (!compiler.AddVariable(name, func, type, { i: mods.i, m: mods.m, o: mods.o }))
+	var _addVariable = function(name, func, type, mods, size){
+		if (!compiler.AddVariable(name, func, type, { i: mods.i, m: mods.m, o: mods.o }, size))
 		{
 			throw { message: "Variable " + name + " is already exists!"};
 		}
@@ -112,9 +83,8 @@ Pseudo.Init = function(_printMethod)
 	// Method returns true if there wasn't any error or throw an exception.
 	var _run = function(code, mode){
 		try{
-			//TODO: remove
-			//clear memory
-			//memory.Clear();
+			//reset memory
+			memory.Reset();
 		
 			// compile the given code
 			_compile(code);
@@ -167,7 +137,7 @@ Pseudo.Init = function(_printMethod)
 		Pseudo._log("Supported");
 		return {
 			// public scope
-			AddVariable: function(name, func, type, mods){ return _addVariable(name, func, type, mods); },
+			AddVariable: function(name, func, type, mods, size){ return _addVariable(name, func, type, mods, size); },
 			ClearVariables: function(){ _clearVariables(); },
 			GetVariable: function(){},
 			RemoveVariable: function(){},

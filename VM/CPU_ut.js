@@ -795,4 +795,53 @@ Pseudo.CPU.StartUnitTest = function CPUTestCase()
 			'PRINTA_I']);	
 			
 	};
+	
+	function test_ExecuteLDH_STACK1()
+	{
+		//Pseudo.Options.Log.EnableAll();
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		this.testMemory.Write(ip, ip+1);
+		this.testMemory.Write(ip+1, 83);
+		this.testCPU.SetInstructionPointer(ip+2);
+		this.testMemory.Write(ip+3, ip);
+		
+		this.runInstructions(
+			['LDH',
+			'LDA_H',
+			'STACKA',
+			'LDH_STACK',
+			'LDA_H',
+			'PRINTA_I']);	
+		
+		//Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, 83, "");
+		
+	};
+	
+	function test_ExecuteOUTB1()
+	{
+		//Pseudo.Options.Log.EnableAll();
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		jsUnity.assertions.assertException(this.runInstructions, "",
+			['OUTB'], "");	
+	};
+	
+	function test_ExecutePRINTA_C1()
+	{
+		//Pseudo.Options.Log.EnableAll();
+		var ip = this.testCPU.GetInstructionPointer();
+		
+		var str = "a";
+		this.testMemory.Write(ip+1, str.charCodeAt(0));
+		
+		this.runInstructions(
+			['LDA',
+			'PRINTA_C']);	
+		
+		//Pseudo.Options.Log.DisableAll();
+		jsUnity.assertions.assertEqual(Pseudo.StartUnitTest.Result, "a", "");
+		
+	};
 }

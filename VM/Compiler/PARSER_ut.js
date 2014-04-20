@@ -476,9 +476,10 @@ Pseudo.COM.Parser.StartUnitTest = function ParserTestCase()
 			"J <- 46.34 \n" +
 			"Ki: I + 'b'");
 		
-		jsUnity.assertions.assertException(this.testParser.Parse, "",
+		/*jsUnity.assertions.assertException(this.testParser.Parse, "",
 			tokens,
-			this.testVariables);
+			this.testVariables);*/
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");	
 	};
 	
 	function test_Char7()
@@ -490,9 +491,11 @@ Pseudo.COM.Parser.StartUnitTest = function ParserTestCase()
 			"J <- 'b' \n" +
 			"Ki: I + J");
 		
-		jsUnity.assertions.assertException(this.testParser.Parse, "",
+		/*jsUnity.assertions.assertException(this.testParser.Parse, "",
 			tokens,
-			this.testVariables);	};
+			this.testVariables);*/
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
+		};
 	
 	function test_Char8()
 	{
@@ -503,9 +506,10 @@ Pseudo.COM.Parser.StartUnitTest = function ParserTestCase()
 			"J <- 'b' \n" +
 			"Ki: 'c' + 'd'");
 		
-		jsUnity.assertions.assertException(this.testParser.Parse, "",
+		/*jsUnity.assertions.assertException(this.testParser.Parse, "",
 			tokens,
-			this.testVariables);
+			this.testVariables);*/
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
 	};
 	
 	function test_Char9()
@@ -517,9 +521,11 @@ Pseudo.COM.Parser.StartUnitTest = function ParserTestCase()
 			"J <- 'b' \n" +
 			"Ki: 'c' + 23");
 		
-		jsUnity.assertions.assertException(this.testParser.Parse, "",
+		/*jsUnity.assertions.assertException(this.testParser.Parse, "",
 			tokens,
-			this.testVariables);
+			this.testVariables);*/
+		jsUnity.assertions.assertNotNull(this.testParser.Parse(tokens, this.testVariables), "");
+	
 	};
 	
 	function test_Mod1()

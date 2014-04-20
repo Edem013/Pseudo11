@@ -13,24 +13,7 @@
 			font-size: 16px;
 			margin-left:auto;
 			margin-right:auto;
-		}
-		.log{
-		  position: relative;
-		  border: 1px solid black;
-			width: 800px;
-			font-family: courier new;
-			height: 360px;
-			margin-top: 20px;
-			font-weight: bold;
-			background-color: black;
-			color: grey;
-			text-align:left;
-			padding: 5px;
-			font-size: 16px;
-			overflow: auto;
-			margin-bottom:20px;
-			height: 0px;
-			visibility:hidden;
+			overflow: hidden;
 		}
 		.keret{
 		  float:left;
@@ -120,7 +103,7 @@
 		  border: 1px solid #cfcfcf;
 		}
 		.funkcioI{
-		  width: 300px;
+		  width: 280px;
 			margin: 0px 0px 0px 0px;
 			border: 0px solid red;
 		}
@@ -131,6 +114,11 @@
 		}
 		.tipusI{
 		  width: 200px;
+			margin: 0px 0px 0px 0px;
+			border: 0px solid red;
+		}
+		.meretI{
+		  width: 52px;
 			margin: 0px 0px 0px 0px;
 			border: 0px solid red;
 		}

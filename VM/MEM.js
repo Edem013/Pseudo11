@@ -51,33 +51,38 @@ Pseudo.Memory.Init = function(){
 	var _write = function( address, value ){
 		memory[address] = value;
 	};
+	
+	var _reset = function(){
 		
-	// The first address where the compiled code starts
-	_write(0,0x0644);
-	
-	// The last address where the compiled code ends
-	_write(1,0x0645);
-	
-	// Screen memory part: cursor 1 byte + 20*80 byte 
-	// 2-1603
-	_write(2,0x0000);
-	
-	//  /------------------memory -----------------------\
-	//  | addr | value                                   |
-	//  |------+-----------------------------------------|
-	//  |  0   | Address of the first instruction (1604) |
-	//  |  1   | Address of the last instuction          |
-	//  |  2   | 1 character for screen                  |
-	//  | ...                                            |
-	//  | 1603 | 1 character for screen                  |
-	//  | 1604 | First instruction of the compiled code  |
-	//  | ...
+		// The first address where the compiled code starts
+		_write(0,0x0644);
+		
+		// The last address where the compiled code ends
+		_write(1,0x0645);
+		
+		// Screen memory part: cursor 1 byte + 20*80 byte 
+		// 2-1603
+		_write(2,0x0000);
+		
+		//  /------------------memory -----------------------\
+		//  | addr | value                                   |
+		//  |------+-----------------------------------------|
+		//  |  0   | Address of the first instruction (1604) |
+		//  |  1   | Address of the last instuction          |
+		//  |  2   | 1 character for screen                  |
+		//  | ...                                            |
+		//  | 1603 | 1 character for screen                  |
+		//  | 1604 | First instruction of the compiled code  |
+		//  | ...
+	};
+	_reset();
 	
 	return {
 		// Public scope
 		Read: function(address){ return _read(address);},
 		Write: function(address, value){ _write(address, value); },
-		Clear: function(){ _memoryClear(); }
+		Clear: function(){ _memoryClear(); },
+		Reset: function(){ _reset(); }
 		// End of public scope
 	};
 
